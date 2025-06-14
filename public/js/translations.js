@@ -45,7 +45,7 @@ const translations = {
     // 功能亮点
     'feature_no_registration': '无需注册',
     'feature_realtime': '实时接收',
-    'feature_auto_destroy': '10分钟自动销毁',
+    'feature_auto_destroy': '30分钟自动销毁',
     'feature_privacy': '保护隐私',
 
     // 关于页面
@@ -201,7 +201,7 @@ const translations = {
     // Features highlights
     'feature_no_registration': 'No Registration',
     'feature_realtime': 'Real-time Reception',
-    'feature_auto_destroy': '10-min Auto Destroy',
+    'feature_auto_destroy': '30-min Auto Destroy',
     'feature_privacy': 'Privacy Protection',
 
     // About page

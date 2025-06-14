@@ -6,13 +6,31 @@ const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
 
+if(fs.existsSync('/app/logs/')){
+  const { createWriteStream } = fs;
+
+//创建一个写入流
+  const logStream = createWriteStream('/app/logs/output.log', { flags: 'a' }); // 'a' 表示追加模式
+
+//将 console.log 重定向到文件
+  console.log = function(...args) {
+    logStream.write(new Date().toISOString() + ' - ' + args.join(' ') + '\n');
+  };
+}
+
+
 // 默认配置
 const defaultConfig = {
   PORT: 3000,
   SMTP_PORT: 25,
   SMTP_HOST: '0.0.0.0',
   MAX_MAILS: 50,
-  MAIL_EXPIRE_MINUTES: 10
+  MAIL_EXPIRE_MINUTES: 10,
+  MYSQL_HOST:'',
+  MYSQL_PORT: '',
+  MYSQL_DB: '',
+  MYSQL_USER: '',
+  MYSQL_PASSWORD: ''
 };
 
 // 尝试加载 .env 文件

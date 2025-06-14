@@ -1,6 +1,6 @@
 // 简化域名配置
 let serverConfig = {
-  domain: window.location.hostname
+  domain: "cici.icu"
 };
 
 // 获取邮箱域名

@@ -38,14 +38,18 @@ app.delete('/api/mails/:mailboxAddr/:idx', (req, res) => {
   const mailboxAddr = decodeURIComponent(req.params.mailboxAddr);
   const { idx } = req.params;
   const ok = deleteMail(mailboxAddr, Number(idx));
-  res.json({ success: ok });
+  ok.then((data)=>{
+    res.json({ success: data });
+  })
 });
 
 // 获取某邮箱的所有邮件列表（邮箱为完整地址）
 app.get('/api/mails/:mailboxAddr', (req, res) => {
   const mailboxAddr = decodeURIComponent(req.params.mailboxAddr);
   const mails = getMailsByMailbox(mailboxAddr);
-  res.json({ mails });
+  mails.then((data)=>{
+    res.json({ data });
+  });
 });
 
 // 获取某邮箱的指定邮件（邮箱为完整地址）
@@ -53,12 +57,14 @@ app.get('/api/mails/:mailboxAddr/:idx', (req, res) => {
   const mailboxAddr = decodeURIComponent(req.params.mailboxAddr);
   const { idx } = req.params;
   const mail = getMailByIdx(mailboxAddr, Number(idx));
+  mails.then((data)=>{
+    if (data) {
+      res.json({ mails:data });
+    } else {
+      res.status(404).json({ error: '邮件不存在或已过期' });
+    }
+  });
 
-  if (mail) {
-    res.json({ mail });
-  } else {
-    res.status(404).json({ error: '邮件不存在或已过期' });
-  }
 });
 
 module.exports = app;
