@@ -4,9 +4,9 @@
   "SMTP_HOST": "0.0.0.0",
   "MAX_MAILS": 50,
   "MAIL_EXPIRE_MINUTES": 30,
-  "MYSQL_HOST": "192.168.31.131",
-  "MYSQL_PORT": "3306",
-  "MYSQL_DB": "sf_mail",
-  "MYSQL_USER": "sf_mail",
-  "MYSQL_PASSWORD": "YSmG3b5jtEnpmwaP"
+  "MYSQL_HOST": "",
+  "MYSQL_PORT": "",
+  "MYSQL_DB": "",
+  "MYSQL_USER": "",
+  "MYSQL_PASSWORD": ""
 }
