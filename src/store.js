@@ -4,8 +4,12 @@ const EXPIRE_MS = (config.MAIL_EXPIRE_MINUTES || 10) * 60 * 1000; // 10分钟
 
 function saveMail(mailboxAddr, mail) {
     const conn = getConnection();
-    const addSql = 'INSERT INTO `mail`(`box`,`mail_to`, `mail_from`, `subject`, `text`, `html`, `date`) VALUES (?,?,?,?,?,?,?)';
-    const  addSqlParams = [mailboxAddr,mail.to,mail.from,mail.subject,mail.text,mail.html,mail.date];
+    const addSql = 'INSERT INTO `mail`(`box`,`mail_to`, `mail_from`, `subject`, `text`, `html`, `date`,`attachments`,`raw`) VALUES (?,?,?,?,?,?,?,?,?)';
+    let attachments = null; 
+    if(mail.attachments!=null){
+        attachments = JSON.stringify(mail.attachments);
+    }
+    const  addSqlParams = [mailboxAddr,mail.to,mail.from,mail.subject,mail.text,mail.html,mail.date,attachments,mail.raw];
     conn.query(addSql,addSqlParams,function (err, result) {
         if(err){
             console.log('[INSERT ERROR] - ',err.message);
@@ -37,6 +41,10 @@ async function getMailsByMailbox(mailboxAddr){
                 return;
             }
             for (let i = 0; i < result.length; i++) {
+                let attachments = null;
+                if(result[i]['attachments']!=null){
+                    attachments = JSON.parse(result[i]['attachments']);
+                }
                 const mail = {
                     to: result[i]['mail_to'],
                     from: result[i]['mail_from'],
@@ -44,7 +52,8 @@ async function getMailsByMailbox(mailboxAddr){
                     text: result[i]['text'],
                     html: result[i]['html'],
                     date: result[i]['date'],
-                    attachments: []
+                    attachments: attachments,
+                    raw: result[i]['raw']
                 };
                 data.push(mail);
             }
@@ -68,6 +77,10 @@ async function getMailByIdx(mailboxAddr, idx){
             }
             if (result.length > 0){
                 let i = 0;
+                let attachments = null;
+                if(result[i]['attachments']!=null){
+                    attachments = JSON.parse(result[i]['attachments']);
+                }
                 const mail = {
                     to: result[i]['mail_to'],
                     from: result[i]['mail_from'],
@@ -75,7 +88,8 @@ async function getMailByIdx(mailboxAddr, idx){
                     text: result[i]['text'],
                     html: result[i]['html'],
                     date: result[i]['date'],
-                    attachments: []
+                    attachments: attachments,
+                    raw: result[i]['raw']
                 };
                 conn.end(); // 关闭连接（建议在所有操作完成后执行）
                 resolve(mail);
@@ -136,11 +150,9 @@ function formatCustom(date) {
 function clear(){
     const now = Date.now();
     let time = now - EXPIRE_MS;
-    console.log(time);
     const conn = getConnection();
     const sql = 'SELECT id FROM `mail` WHERE `date` < ? order by `date` desc limit 0,1000';
     const sqlParams = [formatCustom(new Date(time))];
-    console.log(sqlParams);
     conn.query(sql, sqlParams, function (err, result) {
         let data=[];
         if (err) {

@@ -48,7 +48,7 @@ app.get('/api/mails/:mailboxAddr', (req, res) => {
   const mailboxAddr = decodeURIComponent(req.params.mailboxAddr);
   const mails = getMailsByMailbox(mailboxAddr);
   mails.then((data)=>{
-    res.json({ data });
+    res.json({ mails:data });
   });
 });
 
@@ -59,7 +59,7 @@ app.get('/api/mails/:mailboxAddr/:idx', (req, res) => {
   const mail = getMailByIdx(mailboxAddr, Number(idx));
   mails.then((data)=>{
     if (data) {
-      res.json({ mails:data });
+      res.json({ data });
     } else {
       res.status(404).json({ error: '邮件不存在或已过期' });
     }

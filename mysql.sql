@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS `mail` (
     `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
     `html` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
     `date` datetime NOT NULL,
+    `attachments` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+    `raw` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
     PRIMARY KEY (`id`),
     KEY `idx_box_date` (`box`,`date`),
     KEY `idx_date` (`date`)

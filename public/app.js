@@ -214,7 +214,7 @@ socket.on('mail', mail => {
 });
 
 // 定时轮询API获取历史邮件，防止漏信
-setInterval(fetchMailList, 10000);
+setInterval(fetchMailList, 30000);
 
 // 让全局可访问socket
 window.socket = socket;
